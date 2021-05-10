@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Lam</h1>
     <nuxt/>
   </div>
 </template>
