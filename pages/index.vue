@@ -4,8 +4,13 @@
       <app-logo />
       <h1 class="title">my-vue</h1>
       <h2 class="subtitle">Nuxt.js project</h2>
+      <p v-if="totalVuePackages.length === 0">Loading...</p>
       <div class="links">
-        {{ JSON.stringify(totalVuePackages) }}
+        <ul id="example-1">
+          <li v-for="(item, idx) in totalVuePackages" :key="idx">
+            {{ item.package.name }} - {{ item.package.version }}
+          </li>
+        </ul>
       </div>
     </div>
   </section>
@@ -19,12 +24,17 @@ export default {
     AppLogo,
   },
   data: function () {
-    return { totalVuePackages: {} };
+    return { totalVuePackages: [] };
   },
-  async created() {
-    const response = await fetch("https://api.npms.io/v2/search?q=vue");
-    const data = await response.json();
-    this.totalVuePackages = data.total;
+  methods: {
+    getPackages: async function () {
+      const response = await fetch("https://api.npms.io/v2/search?q=vue");
+      const data = await response.json();
+      this.totalVuePackages = data.results;
+    },
+  },
+  created() {
+    this.getPackages();
   },
 };
 </script>
